@@ -1,0 +1,64 @@
+name: Build and Deploy Tic Tac Toe
+
+on:
+  push:
+    branches:
+      - main  # Change this to your main branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: '6.7.0'  # Adjust to your Qt version
+        host: ubuntu-20.04
+        target: desktop
+        dir: ${{ runner.tool_cache }}/Qt
+
+    - name: Install dependencies
+      run: sudo apt-get install -y build-essential
+
+    - name: Build project
+      run: |
+        mkdir build
+        cd build
+        qmake ../
+        make
+
+    - name: Archive build
+      uses: actions/upload-artifact@v2
+      with:
+        name: tic-tac-toe-build
+        path: build/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download build artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: tic-tac-toe-build
+
+    - name: Deploy to server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_USER: ${{ secrets.SSH_USER }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+        # Define your deployment commands here
+        scp -r tic-tac-toe-build/* $SSH_USER@$SSH_HOST:/path/to/deploy/
