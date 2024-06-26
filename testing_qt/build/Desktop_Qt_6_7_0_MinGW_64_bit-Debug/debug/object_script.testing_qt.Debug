@@ -1,0 +1,15 @@
+debug/tst_everything.o
+debug/agent.o
+debug/board.o
+debug/game.o
+debug/gamelogic.o
+debug/gamestate.o
+debug/humanplayer.o
+debug/login.o
+debug/startup.o
+debug/widget.o
+debug/moc_board.o
+debug/moc_game.o
+debug/moc_login.o
+debug/moc_startup.o
+debug/moc_widget.o

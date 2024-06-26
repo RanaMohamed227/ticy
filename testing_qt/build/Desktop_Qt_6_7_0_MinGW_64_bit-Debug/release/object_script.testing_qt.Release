@@ -1,0 +1,15 @@
+release/tst_everything.o
+release/agent.o
+release/board.o
+release/game.o
+release/gamelogic.o
+release/gamestate.o
+release/humanplayer.o
+release/login.o
+release/startup.o
+release/widget.o
+release/moc_board.o
+release/moc_game.o
+release/moc_login.o
+release/moc_startup.o
+release/moc_widget.o
