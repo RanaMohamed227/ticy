@@ -17,8 +17,8 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '6.7.0'  # Adjust to your Qt version
-        host: ubuntu-20.04
-        target: desktop
+        host: 'linux'     # Use 'linux' for the host
+        target: 'desktop'
         dir: ${{ runner.tool_cache }}/Qt
 
     - name: Install dependencies
